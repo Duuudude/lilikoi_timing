@@ -165,8 +165,8 @@ lilikoi.machine_learning <- function (MLmatrix = PDSmatrix, measurementLabels = 
         }
       }
       test_total_time <- proc.time() - test_start_time
-      write.csv(t(data.matrix(train_total_time)),'/home/xinyingf/timing/Rpart_train.csv')
-      write.csv(t(data.matrix(test_total_time)),'/home/xinyingf/timing/Rpart_test.csv')
+      write.csv(t(data.matrix(train_total_time)),paste0("/home/xinyingf/timing/Rpart_train_", k,".csv"))      
+      write.csv(t(data.matrix(test_total_time)),paste0("/home/xinyingf/timing/Rpart_test_", k,".csv"))
     }
 
 
@@ -215,8 +215,8 @@ lilikoi.machine_learning <- function (MLmatrix = PDSmatrix, measurementLabels = 
         }
       }
       test_total_time <- proc.time() - test_start_time
-      write.csv(t(data.matrix(train_total_time)),'/home/xinyingf/timing/LDA_train.csv')
-      write.csv(t(data.matrix(test_total_time)),'/home/xinyingf/timing/LDA_test.csv')
+      write.csv(t(data.matrix(train_total_time)),paste0("/home/xinyingf/timing/LDA_train_", k,".csv"))      
+      write.csv(t(data.matrix(test_total_time)),paste0("/home/xinyingf/timing/LDA_test_", k,".csv"))
     }
 
 
@@ -265,8 +265,8 @@ lilikoi.machine_learning <- function (MLmatrix = PDSmatrix, measurementLabels = 
       }
       
       test_total_time <- proc.time() - test_start_time
-      write.csv(t(data.matrix(train_total_time)),'/home/xinyingf/timing/SVM_train.csv')
-      write.csv(t(data.matrix(test_total_time)),'/home/xinyingf/timing/SVM_test.csv')
+      write.csv(t(data.matrix(train_total_time)),paste0("/home/xinyingf/timing/SVM_train_", k,".csv"))      
+      write.csv(t(data.matrix(test_total_time)),paste0("/home/xinyingf/timing/SVM_test_", k,".csv"))
 
     }
 
@@ -316,8 +316,8 @@ lilikoi.machine_learning <- function (MLmatrix = PDSmatrix, measurementLabels = 
       }
       
       test_total_time <- proc.time() - test_start_time
-      write.csv(t(data.matrix(train_total_time)),'/home/xinyingf/timing/RF_train.csv')
-      write.csv(t(data.matrix(test_total_time)),'/home/xinyingf/timing/RF_test.csv')
+      write.csv(t(data.matrix(train_total_time)),paste0("/home/xinyingf/timing/RF_train_", k,".csv"))      
+      write.csv(t(data.matrix(test_total_time)),paste0("/home/xinyingf/timing/RF_test_", k,".csv"))
       
     }
 
@@ -369,8 +369,8 @@ lilikoi.machine_learning <- function (MLmatrix = PDSmatrix, measurementLabels = 
       }
       
       test_total_time <- proc.time() - test_start_time
-      write.csv(t(data.matrix(train_total_time)),'/home/xinyingf/timing/GBM_train.csv')
-      write.csv(t(data.matrix(test_total_time)),'/home/xinyingf/timing/GBM_test.csv')
+      write.csv(t(data.matrix(train_total_time)),paste0("/home/xinyingf/timing/GBM_train_", k,".csv"))      
+      write.csv(t(data.matrix(test_total_time)),paste0("/home/xinyingf/timing/GBM_test_", k,".csv"))
       
     }
 
@@ -461,8 +461,8 @@ lilikoi.machine_learning <- function (MLmatrix = PDSmatrix, measurementLabels = 
       }
       
       test_total_time <- proc.time() - test_start_time
-      write.csv(t(data.matrix(train_total_time)),'/home/xinyingf/timing/LOG_train.csv')
-      write.csv(t(data.matrix(test_total_time)),'/home/xinyingf/timing/LOG_test.csv')
+      write.csv(t(data.matrix(train_total_time)),paste0("/home/xinyingf/timing/LOG_train_", k,".csv"))      
+      write.csv(t(data.matrix(test_total_time)),paste0("/home/xinyingf/timing/LOG_test_", k,".csv"))
       
     }
 
@@ -563,8 +563,8 @@ lilikoi.machine_learning <- function (MLmatrix = PDSmatrix, measurementLabels = 
       }
       
       test_total_time <- proc.time() - test_start_time
-      write.csv(t(data.matrix(train_total_time)),'/home/xinyingf/timing/DL_train.csv')
-      write.csv(t(data.matrix(test_total_time)),'/home/xinyingf/timing/DL_test.csv')
+      write.csv(t(data.matrix(train_total_time)),paste0("/home/xinyingf/timing/DL_train_", k,".csv"))      
+      write.csv(t(data.matrix(test_total_time)),paste0("/home/xinyingf/timing/DL_test_", k,".csv"))
 
     }
 
