@@ -9,6 +9,7 @@
 #' @param trainportion train percentage of the total sample size
 #' @param cvnum number of folds
 #' @param dlround epoch number for the deep learning method
+#' @param nrun denotes the total number of runs of each method to get their averaged performance metrics
 #' @param Rpart TRUE if run Rpart method
 #' @param LDA TRUE if run LDA method
 #' @param SVM TRUE if run SVM method
@@ -38,7 +39,7 @@
 
 lilikoi.machine_learning <- function (MLmatrix = PDSmatrix, measurementLabels = Label,
                               significantPathways = selected_Pathways_Weka,
-                              trainportion = 0.8, cvnum = 10, dlround=50,Rpart=TRUE,
+                              trainportion = 0.8, cvnum = 10, dlround=50,nrun=10,Rpart=TRUE,
                               LDA=TRUE,SVM=TRUE,RF=TRUE,GBM=TRUE,PAM=TRUE,LOG=TRUE,DL=TRUE) {
 
 
@@ -88,7 +89,7 @@ lilikoi.machine_learning <- function (MLmatrix = PDSmatrix, measurementLabels = 
 
   # model <- list()
 
-  for (k in 1:10){
+  for (k in 1:nrun){
 
     ###############Shuffle stat first
     rand <- sample(nrow(prostate_df))
@@ -118,7 +119,6 @@ lilikoi.machine_learning <- function (MLmatrix = PDSmatrix, measurementLabels = 
 
     #Rpart####
     if (Rpart == TRUE){
-      train_start_time <- proc.time()
       idx <- idx + 1
       method <- c(method, "Rpart")
 
@@ -140,10 +140,8 @@ lilikoi.machine_learning <- function (MLmatrix = PDSmatrix, measurementLabels = 
       if(length(unilabels) == 2){
         performance_training[8,idx]=fit.cart$results$Balanced_Accuracy[which.max(fit.cart$results$ROC)]#BALANCED ACCURACY
       }
-      
-      train_total_time <- proc.time() - train_start_time
-      test_start_time <- proc.time()
-      
+
+
       ##Get the 5 evaluation metrics from testing data
       if(nrow(irisTest) > 0){
 
@@ -164,9 +162,6 @@ lilikoi.machine_learning <- function (MLmatrix = PDSmatrix, measurementLabels = 
           performance_testing[8,idx]=cartConfusion$byClass[11]#BALANCED ACCURACY
         }
       }
-      test_total_time <- proc.time() - test_start_time
-      write.csv(t(data.matrix(train_total_time)),paste0("/home/xinyingf/timing/Rpart_train_", k,".csv"))      
-      write.csv(t(data.matrix(test_total_time)),paste0("/home/xinyingf/timing/Rpart_test_", k,".csv"))
     }
 
 
@@ -174,7 +169,6 @@ lilikoi.machine_learning <- function (MLmatrix = PDSmatrix, measurementLabels = 
 
     #LDA####
     if (LDA == TRUE){
-      train_start_time <- proc.time()
       idx <- idx + 1
       method <- c(method, "LDA")
 
@@ -192,9 +186,7 @@ lilikoi.machine_learning <- function (MLmatrix = PDSmatrix, measurementLabels = 
       if(length(unilabels) == 2){
         performance_training[8,idx]=fit.lda$results$Balanced_Accuracy[which.max(fit.lda$results$ROC)]#BALANCED ACCURACY
       }
-      
-      train_total_time <- proc.time() - train_start_time
-      test_start_time <- proc.time()
+
 
       ##Get the 5 evaluation metrics from testing data
       if(nrow(irisTest) > 0){
@@ -214,9 +206,7 @@ lilikoi.machine_learning <- function (MLmatrix = PDSmatrix, measurementLabels = 
           performance_testing[8,idx]=ldaConfusion$byClass[11]#BALANCED ACCURACY
         }
       }
-      test_total_time <- proc.time() - test_start_time
-      write.csv(t(data.matrix(train_total_time)),paste0("/home/xinyingf/timing/LDA_train_", k,".csv"))      
-      write.csv(t(data.matrix(test_total_time)),paste0("/home/xinyingf/timing/LDA_test_", k,".csv"))
+
     }
 
 
@@ -224,7 +214,6 @@ lilikoi.machine_learning <- function (MLmatrix = PDSmatrix, measurementLabels = 
 
     #SVM####
     if (SVM == TRUE){
-      train_start_time <- proc.time()
       idx <- idx + 1
       method <- c(method, "SVM")
 
@@ -242,9 +231,6 @@ lilikoi.machine_learning <- function (MLmatrix = PDSmatrix, measurementLabels = 
       if(length(unilabels) == 2){
         performance_training[8,idx]=fit.svm$results$Balanced_Accuracy[which.max(fit.svm$results$ROC)]#BALANCED ACCURACY
       }
-      
-      train_total_time <- proc.time() - train_start_time
-      test_start_time <- proc.time()
 
       if(nrow(irisTest) > 0){
 
@@ -263,17 +249,12 @@ lilikoi.machine_learning <- function (MLmatrix = PDSmatrix, measurementLabels = 
           performance_testing[8,idx]=svmConfusion$byClass[11]#BALANCED ACCURACY
         }
       }
-      
-      test_total_time <- proc.time() - test_start_time
-      write.csv(t(data.matrix(train_total_time)),paste0("/home/xinyingf/timing/SVM_train_", k,".csv"))      
-      write.csv(t(data.matrix(test_total_time)),paste0("/home/xinyingf/timing/SVM_test_", k,".csv"))
 
     }
 
 
     #RF####
     if (RF ==TRUE){
-      train_start_time <- proc.time()
       idx <- idx + 1
       method <- c(method, "RF")
 
@@ -292,10 +273,7 @@ lilikoi.machine_learning <- function (MLmatrix = PDSmatrix, measurementLabels = 
       if(length(unilabels) == 2){
         performance_training[8,idx]=fit.rf$results$Balanced_Accuracy[which.max(fit.rf$results$ROC)]#BALANCED ACCURACY
       }
-      
-      train_total_time <- proc.time() - train_start_time
-      test_start_time <- proc.time()
-      
+
       # Get testing metrics
       if(nrow(irisTest) > 0){
 
@@ -314,17 +292,11 @@ lilikoi.machine_learning <- function (MLmatrix = PDSmatrix, measurementLabels = 
           performance_testing[8,idx]=rfConfusion$byClass[11]#BALANCED ACCURACY
         }
       }
-      
-      test_total_time <- proc.time() - test_start_time
-      write.csv(t(data.matrix(train_total_time)),paste0("/home/xinyingf/timing/RF_train_", k,".csv"))      
-      write.csv(t(data.matrix(test_total_time)),paste0("/home/xinyingf/timing/RF_test_", k,".csv"))
-      
     }
 
 
     #GBM####
     if (GBM ==TRUE){
-      train_start_time <- proc.time()
       idx <- idx + 1
       method <- c(method, "GBM")
 
@@ -346,9 +318,6 @@ lilikoi.machine_learning <- function (MLmatrix = PDSmatrix, measurementLabels = 
       if(length(unilabels) == 2){
         performance_training[8,idx]=fit.gbm$results$Balanced_Accuracy[which.max(fit.gbm$results$ROC)]#BALANCED ACCURACY
       }
-      
-      train_total_time <- proc.time() - train_start_time
-      test_start_time <- proc.time()
 
       if(nrow(irisTest) > 0){
 
@@ -367,11 +336,6 @@ lilikoi.machine_learning <- function (MLmatrix = PDSmatrix, measurementLabels = 
           performance_testing[8,idx]=gbmConfusion$byClass[11]#BALANCED ACCURACY
         }
       }
-      
-      test_total_time <- proc.time() - test_start_time
-      write.csv(t(data.matrix(train_total_time)),paste0("/home/xinyingf/timing/GBM_train_", k,".csv"))      
-      write.csv(t(data.matrix(test_total_time)),paste0("/home/xinyingf/timing/GBM_test_", k,".csv"))
-      
     }
 
 
@@ -418,8 +382,6 @@ lilikoi.machine_learning <- function (MLmatrix = PDSmatrix, measurementLabels = 
 
     #LOG####
     if (LOG == TRUE){
-      train_start_time <- proc.time()
-      
       idx <- idx + 1
       method <- c(method, "LOG")
 
@@ -437,9 +399,6 @@ lilikoi.machine_learning <- function (MLmatrix = PDSmatrix, measurementLabels = 
       if(length(unilabels) == 2){
         performance_training[8,idx]=fit.log$results$Balanced_Accuracy[which.max(fit.log$results$ROC)]#BALANCED ACCURACY
       }
-      
-      train_total_time <- proc.time() - train_start_time
-      test_start_time <- proc.time()
 
       # Get test metrics
       if(nrow(irisTest) > 0){
@@ -459,19 +418,12 @@ lilikoi.machine_learning <- function (MLmatrix = PDSmatrix, measurementLabels = 
           performance_testing[8,idx]=logConfusion$byClass[11]#BALANCED ACCURACY
         }
       }
-      
-      test_total_time <- proc.time() - test_start_time
-      write.csv(t(data.matrix(train_total_time)),paste0("/home/xinyingf/timing/LOG_train_", k,".csv"))      
-      write.csv(t(data.matrix(test_total_time)),paste0("/home/xinyingf/timing/LOG_test_", k,".csv"))
-      
     }
 
 
 
     #Deep learning#######
     if (DL == TRUE){
-      train_start_time <- proc.time()
-      
       idx <- idx + 1
       method <- c(method, "DL")
 
@@ -541,9 +493,6 @@ lilikoi.machine_learning <- function (MLmatrix = PDSmatrix, measurementLabels = 
       if(length(unilabels) == 2){
         performance_training[8,idx]=(performance_training[2,idx]+performance_training[3,idx])/2
       }
-      
-      train_total_time <- proc.time() - train_start_time
-      test_start_time <- proc.time()
 
       # Get test metrics
       if(nrow(irisTest) > 0){
@@ -561,10 +510,6 @@ lilikoi.machine_learning <- function (MLmatrix = PDSmatrix, measurementLabels = 
           performance_testing[8,idx]=(performance_testing[2,idx]+performance_testing[3,idx])/2 #BALANCED ACCURACY
         }
       }
-      
-      test_total_time <- proc.time() - test_start_time
-      write.csv(t(data.matrix(train_total_time)),paste0("/home/xinyingf/timing/DL_train_", k,".csv"))      
-      write.csv(t(data.matrix(test_total_time)),paste0("/home/xinyingf/timing/DL_test_", k,".csv"))
 
     }
 
@@ -707,6 +652,8 @@ lilikoi.machine_learning <- function (MLmatrix = PDSmatrix, measurementLabels = 
         xlab("") + ylab("") + ggtitle("Testing") +
         theme(plot.title = element_text(hjust = 0.5), axis.text = element_text(size = 15, face = "bold"),
               axis.title = element_text(size = 14, face = "bold")) + labs(fill = "")
+      # print(p2)
+
     }
 
 
@@ -723,6 +670,7 @@ lilikoi.machine_learning <- function (MLmatrix = PDSmatrix, measurementLabels = 
 
 
     return(c(performance, plots))
+
 
   }
 

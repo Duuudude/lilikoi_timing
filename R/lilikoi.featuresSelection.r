@@ -6,6 +6,7 @@
 #' @param method information gain ("info") or gain ratio ("gain")
 #' @import caret RWeka infotheo ggplot2
 #' @importFrom stats reorder
+#' @importFrom graphics plot
 #' @keywords features selection
 #' @return A list of top metabolites or pathways.
 #' @export
@@ -23,7 +24,7 @@
 lilikoi.featuresSelection <- function(PDSmatrix,threshold= 0.5,method="info"){
 
   pds_matrix=(as.data.frame(cbind(t(PDSmatrix),Label=Metadata$Label)))
-  pds_matrix$Label <- as.factor(pds_matrix$Label)
+  # pds_matrix$Label <- as.factor(pds_matrix$Label)
   #head(pds_matrix)
   set.seed(2000)
   training_ID <- createDataPartition(pds_matrix$Label, p = .8,list = FALSE,times = 1)
